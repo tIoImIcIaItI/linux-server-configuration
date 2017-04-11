@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% if page_title %}
+        {{ page_title }} | Catalog App
+        {% else %}
+        Catalog App
+        {% endif %}
+    </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{{ url_for('static', filename='js/uikit.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/core/dropdown.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uikit.almost-flat.min.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/styles.css') }}">
+</head>
+
+<body>
+    <div class="uk-container uk-container-center">
+
+        <header role="banner">
+            <!-- MAIN NAVIGATION WIDGET -->
+            <nav class="uk-navbar uk-navbar-attached">
+
+                <ul class="uk-navbar-nav">
+                    <li><a href="{{ url_for('get_categories') }}">Home</a></li>
+                    <li><a href="{{ url_for('get_categories') }}">Categories</a></li>
+                </ul>
+
+                <div class="uk-navbar-flip">
+                    <ul class="uk-navbar-nav">
+                        {% if authenticated %}
+                        <li>
+                            <a href="#">
+                                <span class="sr-only">Signed in as </span>
+                                {{ handle }}
+                            </a>
+                        </li>
+                        <li><a href="{{ url_for('gdisconnect') }}">Sign Out</a></li>
+                        {% else %}
+                        <li><a href="{{ url_for('get_login_page') }}">Sign In</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <!-- MESSAGE FLASHING WIDGET -->
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <div class="uk-alert" data-uk-alert>
+            <a href="" class="uk-alert-close uk-close"></a>
+            <ul>
+                {% for message in messages %}
+                <li><strong>{{message}}</strong></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %} {% endwith %}
+
+        <!-- INCLUDED PAGE CONTENT -->
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app/arrays.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app/objects.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app/formviewmodel.js') }}"></script>
+    <!-- INCLUDED BODY SCRIPTS -->
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

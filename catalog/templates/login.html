@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in | Catalog App</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{{ url_for('static', filename='js/uikit.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/core/dropdown.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uikit.almost-flat.min.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/styles.css') }}">
+
+    <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
+    <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>-->
+    <script src="//apis.google.com/js/platform.js?onload=start"></script>
+    <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+</head>
+
+<body>
+<div class="uk-container uk-container-center">
+
+    <header role="banner">
+        <!-- MAIN NAVIGATION WIDGET -->
+        <nav class="uk-navbar uk-navbar-attached">
+            <ul class="uk-navbar-nav">
+                <li><a href="{{ url_for('get_categories') }}">Home</a></li>
+                <li><a href="{{ url_for('get_categories') }}">Categories</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- MESSAGE FLASHING WIDGET -->
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <div class="uk-alert" data-uk-alert>
+        <a href="" class="uk-alert-close uk-close"></a>
+        <ul>
+            {% for message in messages %}
+            <li><strong>{{message}}</strong></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %} {% endwith %}
+
+    <!-- INCLUDED PAGE CONTENT -->
+    <main id="main">
+
+        <!-- GOOGLE PLUS SIGN IN BUTTON-->
+        <!-- disable data-approvalprompt="force" for PRODUCTION,
+            otherwise signed in users will still have to authenticate every time they visit the login page -->
+        <div id="signInButton">
+            <span class="g-signin"
+                data-scope="openid email"
+                data-clientid="294005127239-u5np37ck1qgslg3gp82iag7b6n2uohl8.apps.googleusercontent.com"
+                data-redirecturi="postmessage"
+                data-accesstype="offline"
+                data-cookiepolicy="single_host_origin"
+                data-callback="signInCallback"
+                data-approvalprompt="force">
+            </span>
+        </div>
+        <!--END GOOGLE PLUS SIGN IN BUTTON -->
+
+    </main>
+
+</div>
+
+<script>
+(function (global) {
+    'use strict';
+
+    global.signInCallback = function(authResult) {
+        if (authResult['code']) {
+
+            // Hide the sign-in button now that the user is authorized
+            $('#signinButton').attr('style', 'display: none');
+
+            // Send the one-time-use code to the server
+            $.ajax({
+                type: 'POST',
+                url: '/gconnect?state={{STATE}}',
+                processData: false,
+                data: authResult['code'],
+                contentType: 'application/octet-stream; charset=utf-8',
+                success: function (result) {
+
+                    // Handle or verify the server response if necessary.
+                    if (result) {
+
+                        console.info('Login Successful');
+                        console.info(result);
+                        console.info(result.redirect);
+
+                        window.location.href = result.redirect;
+
+                    } else if (authResult['error']) {
+
+                        console.error('There was an error: ' + authResult['error']);
+                    } else {
+
+                        console.error('Failed to make a server-side call. Check your configuration and console.');
+                    }
+                }
+            });
+        }
+    }
+}(this));
+</script>
+
+</body>
+</html>

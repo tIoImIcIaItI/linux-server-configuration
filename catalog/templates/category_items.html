@@ -1,0 +1,89 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- BREADCRUMB WIDGET -->
+<nav aria-label="breadcrumb" class="breadcrumbs">
+    <ol class="uk-breadcrumb" >
+        <li><a href="{{ url_for('get_categories') }}">Categories</a></li>
+        <li class="uk-active"><a href="#main" aria-current="page">{{category.name}}</a></li>
+    </ol>
+</nav>
+
+<main id="main">
+   
+<!-- CATEGORY -->
+<h1 class="user-content">
+    {{category.name}}
+</h1>
+
+<!-- CATEGORY TOOLBAR -->
+{% if authenticated and (can.update or can.delete) %}
+{% if can.update and can.delete %}
+<div class="uk-button-group">
+{% else %}
+<div class="">
+{% endif %}
+
+    {% if can.update %}
+    <!-- EDIT CATEGORY -->
+    <a class="btn uk-button" 
+        href="{{ url_for('update_category_by_id', category_id=category.id) }}">
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+        edit <span class="sr-only"> category {{category.name}}</span>
+    </a>
+    {% endif %}
+
+    {% if can.delete %}
+    <!-- DELETE CATEGORY -->
+    <a class="btn uk-button" 
+        href="{{ url_for('delete_category_by_id', category_id=category.id) }}">
+        <i class="fa fa-trash-o" aria-hidden="true"></i>
+        delete <span class="sr-only"> category {{category.name}}</span>
+    </a>
+    {% endif %}
+
+</div>
+{% endif %}
+
+<!-- ITEMS -->
+<h2>Items</h2>
+
+<!-- ITEMS TOOLBAR -->
+{% if authenticated %}
+<div class="">
+    <a class="btn uk-button" 
+        href="{{ url_for('create_item', category_id=category.id) }}">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <span class="">New Item</span>
+    </a>
+</div>
+{% endif %}
+
+<!-- ITEM LIST -->
+<ul class="uk-grid uk-grid-small" data-uk-grid-match data-uk-observe>
+    {% for item in items %}
+    <li itemscope itemtype="http://schema.org/Product"
+        class="uk-width-large-1-3 uk-width-medium-1-2 uk-width-small-1-1">
+
+        <meta itemprop="category" content="{{category.name}}" />
+
+        <div class="uk-panel uk-panel-hover uk-panel-space">
+
+            <h3 itemprop="name" class="uk-panel-title user-content">
+                <a href="{{ url_for('get_item_by_id', category_id=category.id, item_id=item.id) }}">
+                    {{ item.title }}
+                </a>
+            </h2>
+
+            <p itemprop="description" class="user-content">
+                {{ item.description }}
+            </p>
+
+        </div>
+
+    </li>
+    {% endfor %}
+</ul>
+    
+</main>
+
+{% endblock %}

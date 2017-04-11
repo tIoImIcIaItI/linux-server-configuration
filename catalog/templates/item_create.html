@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- BREADCRUMB WIDGET -->
+<nav aria-label="breadcrumb" class="breadcrumbs">
+    <ol class="uk-breadcrumb" >
+        <li><a href="{{ url_for('get_categories') }}">Categories</a></li>
+        <li><a href="{{ url_for('get_category_by_id',category_id=category.id) }}">{{category.name}}</a></li>
+        <li class="uk-active"><a href="#main" aria-current="page">new item</a></li>
+    </ol>
+</nav>
+
+<main id="main">
+
+<h1>New Item</h1>
+
+<form id="item-form"
+    class="uk-form uk-form-stacked" data-uk-margin
+    action="{{ url_for('create_item', category_id=category_id) }}"
+    method="POST">
+
+    <fieldset class="uk-form-row">
+
+        <label class="uk-form-label" for="title">Title</label>
+
+        <input class="{{ 'uk-form-danger' if title_error else '' }}"
+            data-autofocus
+            type="text" size="30" id="title" name="title"
+            maxlength="80" minlength="2" required aria-required="true"
+            placeholder="item title" value="{{ title or ''}}">
+
+        <div id="title-error" data-error-for="title"
+            class="validation-error uk-text-danger invisible"></div>
+
+        <div class="uk-text-danger">
+            {% if title_error %}
+            {{ title_error }}
+            {% endif %}
+        </div>
+
+    </fieldset>
+
+    <fieldset class="uk-form-row">
+
+        <label class="uk-form-label" for="description">Description</label>
+
+        <input class="{{ 'uk-form-danger' if description_error else '' }}"
+            type="text" size="30" id="description" name="description"
+            maxlength="250" minlength="2" required aria-required="true"
+            placeholder="item description" value="{{ description or '' }}">
+
+        <div id="description-error" data-error-for="description"
+            class="validation-error uk-text-danger invisible"></div>
+
+        <div class="uk-text-danger">
+            {% if description_error %}
+            {{ description_error }}
+            {% endif %}
+        </div>
+
+    </fieldset>
+
+    <fieldset class="uk-form-row">
+
+        <button class="uk-button uk-button-primary" type='submit' >
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            create <span class="sr-only"> new item</span>
+        </button>
+
+        <a class="uk-button uk-button-mini"
+            href="{{ url_for('get_category_by_id', category_id=category_id) }}">
+            cancel
+        </a>
+
+    </fieldset>
+
+</form>
+
+</main>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/app/itemformviewmodel.js') }}"></script>
+{% endblock %}

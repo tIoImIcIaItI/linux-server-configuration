@@ -1,0 +1,83 @@
+@media only screen and (max-width: 460px) {
+	
+	html {
+		font-size: 3.2vw;
+	}
+
+}
+
+.uk-navbar-nav > li > a {
+	font-size: 0.7rem;
+}
+
+* {
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+}
+
+body {
+    max-width: 60rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1, h2, h3, h4, h5, h6, .uk-panel-title {
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    text-transform: uppercase;
+    text-shadow: rgba(128, 128, 128, 0.33) 1px 1px 6px; 
+}
+
+.user-content {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.breadcrumbs a {
+    text-transform: lowercase;
+}
+
+.btn {
+    text-transform: lowercase;
+}
+
+header a {
+    text-transform: uppercase;
+}
+
+nav.breadcrumbs {
+    margin-top: 1em;
+}
+
+nav.breadcrumbs [aria-current="page"] {
+	color: #333;
+	font-weight: 300;
+}
+
+/*---------------------------------------------------------------------------*/
+/* FORM HELPERS */
+
+.invisible {
+	visibility: hidden;
+}
+
+.required-annotation {
+	/*color: #668;*/
+	font-size: 0.5em;
+	position: relative;
+	top: -1em;
+	left: 0.5em;
+}
+
+ /*copied from uk-form-danger */
+input[aria-invalid='true'] { 
+    border-color: #dc8d99!important;
+    background: #fff7f8!important;
+    color: #d85030!important;
+}
+
+.validation-error {
+	min-height: 1.5em; /* prevent collapse causing sliding content */
+	margin: 0;
+	margin-top: 0.25em;
+	font-style: italic;
+}
