@@ -1,4 +1,4 @@
-# Linux Server Configuration Submission
+# Linux Server Configuration Project
 
 ## Project Description
 
@@ -12,10 +12,12 @@ You will need a [Google account](https://accounts.google.com/signup) in order to
 
 ## Deployment Methodology
 
-A local Vagrant VM was used initially to develop and test a set of deployment and configuration shell scripts for both the local and server systems.
-On the local system, authentication keys were created for each user.
-Next, the scripts and supporting files were copied from local to server using `scp`, and then executed to fully prepare the server upon completion.
-The local key generation script is not included in the repository, as a security consideration.
+A local Vagrant VM was used initially to develop and test a set of deployment and configuration shell scripts for both the local and server systems. Most of these scripts are included in the repository.
+
+On the local system, scripts created authentication keys for each user.
+Scripts and supporting files were then deployed to the server and executed, to fully prepare the server upon completion.
+
+The local key generation script, generated keys, and other sensitive information is not included in the repository for obvious reasons.
 
 ## Server Information
 
@@ -44,17 +46,19 @@ Entry-point: `/webapps/catalog/catalog.wsgi`
 
 ### Notable Software & Libraries Used
 
-#### Web
+#### Web Server
 - Apache w/WSGI (apache2, libapache2-mod-wsgi)
 
-#### Database
+#### Database Server
 
 - PostgreSQL (`postgresql`, `python-psycopg2`)
 - SqlAlchemy (`python-sqlalchemy`)
 
-#### Application
+#### Application Framework
 - Python 2.7
 - Flask (`python-flask`)
+
+The web application itself is a derivative of my [item-catalog](https://github.com/tIoImIcIaItI/item-catalog) project, enhanced to be more configurable in a hosted environment.
 
 ### Notable Configuration Changes
 
@@ -64,8 +68,23 @@ Entry-point: `/webapps/catalog/catalog.wsgi`
 - SSH running on non-standard port
 - Created and configured `grader` user account with key-based authentication
 - Disabled password-based logins
-- Installed and configured web server, database server
+- Installed, configured and secured web server, database server
 - Installed web app and dependencies
 - Created and configured application database, user, and permissions
 
+The web server is not configured to serve any static files. In combination with the web app serving only generated content and files from safe locations, this limits public access appropriately.
+
+The application database login is limited to CRUD operations on the app database only.
+
 ## Attributions
+See my [item-catalog](https://github.com/tIoImIcIaItI/item-catalog) project for sources used to create the web application itself.
+
+The setup scripts are entirely a product of hundreds of Google searches for all the bits and pieces needed to automate the process from the Bash shell. Primary sources include the following.
+- `man` and help pages for all commands used
+- [Ask Ubuntu](https://askubuntu.com/)
+- [Stack Overflow](http://stackoverflow.com/)
+- [Apache](https://httpd.apache.org/docs/)
+- [Udacity](https://www.udacity.com/)
+
+## Known Issues
+Currently the application database connection info is set manually after deployment. The code should instead be getting this information from an external source (configuration file, environment variable, or similar).

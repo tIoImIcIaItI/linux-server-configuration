@@ -1,0 +1,16 @@
+# Vagrant
+Vagrantfile
+\.vagrant/
+
+# Compiled Python files
+**/*.pyc
+
+# PyCharm directory
+\.idea/
+
+# Google Client Secrets file
+client_secrets.json
+
+# Authentication-key generation logic and output
+create_keys.sh
+*.pub
